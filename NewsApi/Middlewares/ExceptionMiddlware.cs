@@ -45,6 +45,28 @@ public class ExceptionMiddleware
             );
         }
 
+        catch (UserAlreadyExistsException ex)
+        {
+            _logger.LogError(
+                ex,
+                "User with email {Email} already exists",
+                ex.Email
+            );
+
+            httpContext.Response.ContentType = "application/json";
+
+            httpContext.Response.StatusCode = 409;
+
+            var response = new
+            {
+                message = ex.Message
+            };
+
+            await httpContext.Response.WriteAsync(
+                JsonSerializer.Serialize(response)
+            );
+        }
+
         catch (Exception ex)
         {
             httpContext.Response.StatusCode = 500;

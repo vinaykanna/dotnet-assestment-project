@@ -11,7 +11,6 @@ namespace NewsApi.Controllers;
 [Route("api/articles")]
 public class NewsController(IArticlesService articlesService) : ControllerBase
 {
-
     private readonly IArticlesService _articlesService = articlesService;
     [HttpGet]
     [Authorize]

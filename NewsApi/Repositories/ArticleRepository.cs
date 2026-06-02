@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using NewsApi.Data;
 using NewsApi.Models;
 
 namespace NewsApi.Repositories;

@@ -13,7 +13,6 @@ public interface IArticlesService
 
 public class ArticlesService(IArticleRepository productsRepository) : IArticlesService
 {
-
     private readonly IArticleRepository _articleRepository = productsRepository;
 
     public async Task<List<ArticleResponseDto>> GetArticles()
@@ -32,6 +31,7 @@ public class ArticlesService(IArticleRepository productsRepository) : IArticlesS
             {
                 Id = a.Author!.Id!,
                 Name = a.Author.Name,
+                Email = a.Author.Email
             }
         }).ToList();
     }

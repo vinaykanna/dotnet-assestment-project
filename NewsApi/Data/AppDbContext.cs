@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using NewsApi.Models;
 
+namespace NewsApi.Data;
+
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<Article> Articles { get; set; }
