@@ -4304,3 +4304,175 @@ System.ArgumentNullException: Value cannot be null. (Parameter 'logger')
                 ) c ON a.Id = c.ArticleId
              ORDER BY TrendingScore DESC
 2026-06-02 23:35:51.822 +05:30 [INF] Refreshing trending data
+2026-06-02 23:40:51.901 +05:30 [INF] Running Background cache service for trending articles at: "2026-06-02T23:40:51.8961910+05:30"
+2026-06-02 23:40:51.995 +05:30 [INF] Executed DbCommand (42ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+
+             SELECT TOP 10
+                a.Id,
+                a.Title,
+                ISNULL(v.ViewCount, 0) AS ViewCount,
+                ISNULL(c.CommentCount, 0) AS CommentCount,
+                (
+                    ISNULL(v.ViewCount, 0) +
+                    ISNULL(c.CommentCount, 0) * 3
+                ) AS TrendingScore
+                FROM Articles a
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS ViewCount
+                    FROM ArticleViews
+                    WHERE ViewedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) v ON a.Id = v.ArticleId
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS CommentCount
+                    FROM Comments
+                    WHERE CreatedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) c ON a.Id = c.ArticleId
+             ORDER BY TrendingScore DESC
+2026-06-02 23:40:51.998 +05:30 [INF] Refreshing trending data
+2026-06-02 23:42:18.330 +05:30 [INF] Application is shutting down...
+2026-06-02 23:42:22.808 +05:30 [INF] User profile is available. Using '/Users/vinay.kumar/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-06-02 23:42:22.888 +05:30 [INF] Background cache service for trending articles initialized.
+2026-06-02 23:42:22.888 +05:30 [INF] Running Background cache service for trending articles at: "2026-06-02T23:42:22.8885510+05:30"
+2026-06-02 23:42:22.920 +05:30 [INF] Now listening on: http://localhost:5195
+2026-06-02 23:42:22.920 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-02 23:42:22.920 +05:30 [INF] Hosting environment: Development
+2026-06-02 23:42:22.920 +05:30 [INF] Content root path: /Users/vinay.kumar/Desktop/Learnings/News/NewsApi
+2026-06-02 23:42:23.718 +05:30 [INF] Executed DbCommand (49ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+
+             SELECT TOP 10
+                a.Id,
+                a.Title,
+                ISNULL(v.ViewCount, 0) AS ViewCount,
+                ISNULL(c.CommentCount, 0) AS CommentCount,
+                (
+                    ISNULL(v.ViewCount, 0) +
+                    ISNULL(c.CommentCount, 0) * 3
+                ) AS TrendingScore
+                FROM Articles a
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS ViewCount
+                    FROM ArticleViews
+                    WHERE ViewedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) v ON a.Id = v.ArticleId
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS CommentCount
+                    FROM Comments
+                    WHERE CreatedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) c ON a.Id = c.ArticleId
+             ORDER BY TrendingScore DESC
+2026-06-02 23:42:23.737 +05:30 [INF] Refreshing trending data
+2026-06-02 23:47:23.804 +05:30 [INF] Running Background cache service for trending articles at: "2026-06-02T23:47:23.8039770+05:30"
+2026-06-02 23:47:23.890 +05:30 [INF] Executed DbCommand (40ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+
+             SELECT TOP 10
+                a.Id,
+                a.Title,
+                ISNULL(v.ViewCount, 0) AS ViewCount,
+                ISNULL(c.CommentCount, 0) AS CommentCount,
+                (
+                    ISNULL(v.ViewCount, 0) +
+                    ISNULL(c.CommentCount, 0) * 3
+                ) AS TrendingScore
+                FROM Articles a
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS ViewCount
+                    FROM ArticleViews
+                    WHERE ViewedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) v ON a.Id = v.ArticleId
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS CommentCount
+                    FROM Comments
+                    WHERE CreatedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) c ON a.Id = c.ArticleId
+             ORDER BY TrendingScore DESC
+2026-06-02 23:47:23.892 +05:30 [INF] Refreshing trending data
+2026-06-02 23:52:23.904 +05:30 [INF] Running Background cache service for trending articles at: "2026-06-02T23:52:23.9038670+05:30"
+2026-06-02 23:52:24.132 +05:30 [INF] Executed DbCommand (35ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+
+             SELECT TOP 10
+                a.Id,
+                a.Title,
+                ISNULL(v.ViewCount, 0) AS ViewCount,
+                ISNULL(c.CommentCount, 0) AS CommentCount,
+                (
+                    ISNULL(v.ViewCount, 0) +
+                    ISNULL(c.CommentCount, 0) * 3
+                ) AS TrendingScore
+                FROM Articles a
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS ViewCount
+                    FROM ArticleViews
+                    WHERE ViewedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) v ON a.Id = v.ArticleId
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS CommentCount
+                    FROM Comments
+                    WHERE CreatedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) c ON a.Id = c.ArticleId
+             ORDER BY TrendingScore DESC
+2026-06-02 23:52:24.132 +05:30 [INF] Refreshing trending data
+2026-06-02 23:57:24.150 +05:30 [INF] Running Background cache service for trending articles at: "2026-06-02T23:57:24.1478690+05:30"
+2026-06-02 23:57:24.205 +05:30 [INF] Executed DbCommand (45ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+
+             SELECT TOP 10
+                a.Id,
+                a.Title,
+                ISNULL(v.ViewCount, 0) AS ViewCount,
+                ISNULL(c.CommentCount, 0) AS CommentCount,
+                (
+                    ISNULL(v.ViewCount, 0) +
+                    ISNULL(c.CommentCount, 0) * 3
+                ) AS TrendingScore
+                FROM Articles a
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS ViewCount
+                    FROM ArticleViews
+                    WHERE ViewedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) v ON a.Id = v.ArticleId
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS CommentCount
+                    FROM Comments
+                    WHERE CreatedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) c ON a.Id = c.ArticleId
+             ORDER BY TrendingScore DESC
+2026-06-02 23:57:24.206 +05:30 [INF] Refreshing trending data
