@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NewsApi.Data;
+using NewsApi.DTOs;
 using NewsApi.Models;
 using NewsApi.Repositories.Interfaces;
 
@@ -57,5 +58,42 @@ public class ArticlesRepository(AppDbContext context) : IArticleRepository
         _context.Articles.Update(article);
         await _context.SaveChangesAsync();
         return article;
+    }
+
+    public async Task<List<TrendingArticleDto>> GetTrendingArticlesAsync()
+    {
+        return await _context.Set<TrendingArticleDto>()
+            .FromSqlRaw(@"
+             SELECT TOP 10
+                a.Id,
+                a.Title,
+                ISNULL(v.ViewCount, 0) AS ViewCount,
+                ISNULL(c.CommentCount, 0) AS CommentCount,
+                (
+                    ISNULL(v.ViewCount, 0) +
+                    ISNULL(c.CommentCount, 0) * 3
+                ) AS TrendingScore
+                FROM Articles a
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS ViewCount
+                    FROM ArticleViews
+                    WHERE ViewedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) v ON a.Id = v.ArticleId
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS CommentCount
+                    FROM Comments
+                    WHERE CreatedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) c ON a.Id = c.ArticleId
+             ORDER BY TrendingScore DESC")
+            .AsNoTracking()
+            .ToListAsync();
     }
 }

@@ -23,6 +23,10 @@ builder.Host.UseSerilog();
 
 // Services
 builder.Services.AddSqlServerDatabase(builder.Configuration);
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
@@ -32,10 +36,12 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IArticleRepository, ArticlesRepository>();
 builder.Services.AddScoped<IArticleViewRepository, ArticleViewRepository>();
 builder.Services.AddScoped<IArticlesService, ArticlesService>();
+builder.Services.AddScoped<ITrendingArticlesService, TrendingArticlesService>();
 builder.Services.AddScoped<IFavouriteArticleRepository, FavouriteArticleRepository>();
 builder.Services.AddScoped<IFavouriteArticlesService, FavouriteArticlesService>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentsService, CommentsService>();
+builder.Services.AddHostedService<TrendingBackgroundService>();
 builder.Services.AddControllers();
 builder.Services.AddMemoryCache();
 builder.Services.AddOpenApi();

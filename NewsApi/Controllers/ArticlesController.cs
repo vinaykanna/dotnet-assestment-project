@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsApi.DTOs;
 using NewsApi.Enums;
-using NewsApi.Models;
 using NewsApi.Services.Interfaces;
 
 namespace NewsApi.Controllers;
 
 [ApiController]
 [Route("api/articles")]
-public class NewsController(IArticlesService articlesService) : ControllerBase
+public class NewsController(IArticlesService articlesService, ITrendingArticlesService trendingArticlesService) : ControllerBase
 {
 
     [HttpGet]
@@ -67,5 +66,13 @@ public class NewsController(IArticlesService articlesService) : ControllerBase
         var userId = User.GetUserId();
         await articlesService.AddArticleView(id, userId);
         return NoContent();
+    }
+
+    [Authorize]
+    [HttpGet("trending")]
+    public async Task<IActionResult> GetTrendingArticles()
+    {
+        var trendingArticles = await trendingArticlesService.GetTrendingArticles();
+        return Ok(trendingArticles);
     }
 }

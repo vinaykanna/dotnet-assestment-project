@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NewsApi.DTOs;
 using NewsApi.Models;
 
 namespace NewsApi.Data;
@@ -15,6 +16,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<TrendingArticleDto>()
+            .HasNoKey();
+
         modelBuilder.Entity<Article>()
                .HasOne(a => a.Author)
                .WithMany(u => u.AuthoredArticles)
