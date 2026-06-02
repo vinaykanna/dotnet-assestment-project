@@ -249,24 +249,8 @@ dotnet ef database update
 dotnet run
 ```
 
-### Open Swagger
+### Open API Docs
 
 ```text
 https://localhost:5195/scalar
 ```
-
-## Key Concepts Demonstrated
-
-* Clean Architecture Principles
-* Repository Pattern
-* Dependency Injection
-* JWT Authentication
-* Entity Framework Core
-* Redis Caching
-* Background Services
-* Exception Handling
-* DTO Mapping
-* Validation
-* Logging
-* RESTful API Design
-* Extension Methods

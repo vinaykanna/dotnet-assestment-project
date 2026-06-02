@@ -4476,3 +4476,43 @@ System.ArgumentNullException: Value cannot be null. (Parameter 'logger')
                 ) c ON a.Id = c.ArticleId
              ORDER BY TrendingScore DESC
 2026-06-02 23:57:24.206 +05:30 [INF] Refreshing trending data
+2026-06-02 23:58:03.758 +05:30 [INF] Application is shutting down...
+2026-06-02 23:58:48.089 +05:30 [INF] User profile is available. Using '/Users/vinay.kumar/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-06-02 23:58:48.221 +05:30 [INF] Background cache service for trending articles initialized.
+2026-06-02 23:58:48.222 +05:30 [INF] Running Background cache service for trending articles at: "2026-06-02T23:58:48.2219350+05:30"
+2026-06-02 23:58:48.407 +05:30 [INF] Now listening on: http://localhost:5195
+2026-06-02 23:58:48.408 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-02 23:58:48.408 +05:30 [INF] Hosting environment: Development
+2026-06-02 23:58:48.408 +05:30 [INF] Content root path: /Users/vinay.kumar/Desktop/Learnings/News
+2026-06-02 23:58:49.339 +05:30 [INF] Executed DbCommand (37ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+
+             SELECT TOP 10
+                a.Id,
+                a.Title,
+                ISNULL(v.ViewCount, 0) AS ViewCount,
+                ISNULL(c.CommentCount, 0) AS CommentCount,
+                (
+                    ISNULL(v.ViewCount, 0) +
+                    ISNULL(c.CommentCount, 0) * 3
+                ) AS TrendingScore
+                FROM Articles a
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS ViewCount
+                    FROM ArticleViews
+                    WHERE ViewedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) v ON a.Id = v.ArticleId
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS CommentCount
+                    FROM Comments
+                    WHERE CreatedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) c ON a.Id = c.ArticleId
+             ORDER BY TrendingScore DESC
+2026-06-02 23:58:49.365 +05:30 [INF] Refreshing trending data
