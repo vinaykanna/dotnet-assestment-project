@@ -7,16 +7,25 @@ namespace NewsApi.Services;
 
 public interface IFavouriteArticlesService
 {
-    Task<List<FavouriteArticle>> GetFavourites();
+    Task<List<FavouriteArticleResponseDto>> GetFavourites();
     Task<FavouriteArticle?> CreateFavourite(FavouriteArticleDto favouriteArticle, Guid currentUserId);
     Task<FavouriteArticle?> DeleteFavourite(Guid id, Guid currentUserId);
 }
 
 public class FavouriteArticlesService(IFavouriteArticleRepository favouriteArticleRepository) : IFavouriteArticlesService
 {
-    public async Task<List<FavouriteArticle>> GetFavourites()
+    public async Task<List<FavouriteArticleResponseDto>> GetFavourites()
     {
-        return await favouriteArticleRepository.GetAllAsync();
+        var articles = await favouriteArticleRepository.GetAllAsync();
+
+        return articles.Select(a => new FavouriteArticleResponseDto
+        {
+            Id = a.Id,
+            ArticleId = a.Article!.Id,
+            ArticleTitle = a.Article!.Title,
+            ArticleContent = a.Article!.Content!,
+            CreatedAt = a.CreatedAt,
+        }).ToList();
     }
 
     public async Task<FavouriteArticle?> CreateFavourite(FavouriteArticleDto favouriteArticle, Guid currentUserId)

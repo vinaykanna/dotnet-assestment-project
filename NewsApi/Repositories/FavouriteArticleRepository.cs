@@ -28,6 +28,7 @@ public class FavouriteArticleRepository(AppDbContext context) : IFavouriteArticl
     {
         return await _context.FavouriteArticles
                 .AsNoTracking()
+                .Include(x => x.Article)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
     }

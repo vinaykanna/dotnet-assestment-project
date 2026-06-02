@@ -38,9 +38,7 @@ public class NewsController(IArticlesService articlesService) : ControllerBase
     Guid id,
     UpdateArticleDto updateArticleDto)
     {
-
-        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
+        var userId = User.GetUserId();
         var article = await _articlesService.UpdateArticle(
             id,
             updateArticleDto,
@@ -53,10 +51,8 @@ public class NewsController(IArticlesService articlesService) : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
+        var userId = User.GetUserId();
         await _articlesService.DeleteArticle(id, userId);
-
         return NoContent();
     }
 }

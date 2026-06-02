@@ -22,7 +22,7 @@ public class FavouriteArticlesController(IFavouriteArticlesService favouriteArti
     [Authorize]
     public async Task<IActionResult> CreateFavourite(FavouriteArticleDto favouriteArticleDto)
     {
-        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var userId = User.GetUserId();
         var favourite = await favouriteArticlesService.CreateFavourite(favouriteArticleDto, userId);
         return Ok(favourite);
     }
@@ -31,7 +31,7 @@ public class FavouriteArticlesController(IFavouriteArticlesService favouriteArti
     [Authorize]
     public async Task<IActionResult> DeleteFavourite(Guid id)
     {
-        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var userId = User.GetUserId();
         await favouriteArticlesService.DeleteFavourite(id, userId);
         return NoContent();
     }
