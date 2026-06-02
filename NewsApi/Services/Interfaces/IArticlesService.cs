@@ -13,4 +13,6 @@ public interface IArticlesService
         Guid currentUserId);
 
     Task DeleteArticle(Guid articleId, Guid currentUserId);
+
+    Task AddArticleView(Guid articleId, Guid userId);
 }

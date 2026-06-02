@@ -10,6 +10,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<FavouriteArticle> FavouriteArticles { get; set; }
     public DbSet<Comment> Comments { get; set; }
 
+    public DbSet<ArticleView> ArticleViews { get; set; }
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Article>()

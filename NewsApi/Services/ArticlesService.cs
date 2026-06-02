@@ -7,7 +7,7 @@ using NewsApi.Services.Interfaces;
 
 namespace NewsApi.Services;
 
-public class ArticlesService(IArticleRepository articleRepository) : IArticlesService
+public class ArticlesService(IArticleRepository articleRepository, IArticleViewRepository articleViewRepository) : IArticlesService
 {
     public async Task<PagedResponse<ArticleResponseDto>> GetArticles(
      int pageNumber,
@@ -116,5 +116,17 @@ public class ArticlesService(IArticleRepository articleRepository) : IArticlesSe
         }
 
         await articleRepository.DeleteAsync(articleId);
+    }
+
+    public async Task AddArticleView(Guid articleId, Guid userId)
+    {
+        var articleView = new ArticleView
+        {
+            ArticleId = articleId,
+            UserId = userId,
+            ViewedAt = DateTime.UtcNow
+        };
+
+        await articleViewRepository.AddArticleView(articleView);
     }
 }

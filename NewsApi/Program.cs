@@ -30,6 +30,7 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IArticleRepository, ArticlesRepository>();
+builder.Services.AddScoped<IArticleViewRepository, ArticleViewRepository>();
 builder.Services.AddScoped<IArticlesService, ArticlesService>();
 builder.Services.AddScoped<IFavouriteArticleRepository, FavouriteArticleRepository>();
 builder.Services.AddScoped<IFavouriteArticlesService, FavouriteArticlesService>();

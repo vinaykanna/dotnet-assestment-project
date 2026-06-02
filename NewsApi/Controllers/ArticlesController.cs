@@ -59,4 +59,13 @@ public class NewsController(IArticlesService articlesService) : ControllerBase
         await articlesService.DeleteArticle(id, userId);
         return NoContent();
     }
+
+    [Authorize]
+    [HttpPost("{id}/view")]
+    public async Task<IActionResult> AddArticleView(Guid id)
+    {
+        var userId = User.GetUserId();
+        await articlesService.AddArticleView(id, userId);
+        return NoContent();
+    }
 }

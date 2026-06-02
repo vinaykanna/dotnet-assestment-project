@@ -13,5 +13,7 @@ public class Article
     public ArticleStatus Status { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public ICollection<Comment>? Comments { get; set; }
+    public IList<Comment>? Comments { get; set; }
+
+    public IList<ArticleView>? ArticleViews { get; set; }
 }
