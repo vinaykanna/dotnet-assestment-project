@@ -16,13 +16,20 @@ public class ArticlesRepository(AppDbContext context) : IArticleRepository
         return product;
     }
 
-    public async Task<List<Article>> GetAllAsync()
+    public async Task<List<Article>> GetAllAsync(int pageNumber, int pageSize)
     {
         return await _context.Articles
-                .AsNoTracking()
-                .OrderByDescending(x => x.CreatedAt)
-                .Include(x => x.Author)
-                .ToListAsync();
+            .AsNoTracking()
+            .Include(a => a.Author)
+            .OrderByDescending(a => a.CreatedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
+
+    public async Task<int> GetCountAsync()
+    {
+        return await _context.Articles.CountAsync();
     }
 
     public async Task<Article?> GetAsync(Guid id)

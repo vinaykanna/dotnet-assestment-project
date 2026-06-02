@@ -12,14 +12,17 @@ namespace NewsApi.Controllers;
 [Route("api/articles")]
 public class NewsController(IArticlesService articlesService) : ControllerBase
 {
-    private readonly IArticlesService _articlesService = articlesService;
-    [HttpGet]
-    [Authorize]
-    public async Task<ActionResult<List<Article>>> GetArticles()
-    {
-        var articles = await _articlesService.GetArticles();
 
-        return Ok(articles);
+    [HttpGet]
+    public async Task<ActionResult<PagedResponse<ArticleResponseDto>>> GetArticles(
+      [FromQuery] GetArticlesRequestDto request
+      )
+    {
+        var result = await articlesService.GetArticles(
+            request.PageNumber!.Value,
+            request.PageSize!.Value);
+
+        return Ok(result);
     }
 
     [HttpPost]
@@ -28,7 +31,7 @@ public class NewsController(IArticlesService articlesService) : ControllerBase
     {
         var authorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        var article = await _articlesService.CreateArticle(articleDto, authorId!);
+        var article = await articlesService.CreateArticle(articleDto, authorId!);
 
         return Ok(article);
     }
@@ -40,7 +43,7 @@ public class NewsController(IArticlesService articlesService) : ControllerBase
     UpdateArticleDto updateArticleDto)
     {
         var userId = User.GetUserId();
-        var article = await _articlesService.UpdateArticle(
+        var article = await articlesService.UpdateArticle(
             id,
             updateArticleDto,
             userId);
@@ -53,7 +56,7 @@ public class NewsController(IArticlesService articlesService) : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         var userId = User.GetUserId();
-        await _articlesService.DeleteArticle(id, userId);
+        await articlesService.DeleteArticle(id, userId);
         return NoContent();
     }
 }

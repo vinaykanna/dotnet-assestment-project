@@ -4,7 +4,7 @@ namespace NewsApi.Services.Interfaces;
 
 public interface IArticlesService
 {
-    Task<List<ArticleResponseDto>> GetArticles();
+    Task<PagedResponse<ArticleResponseDto>> GetArticles(int pageNumber, int pageSize);
     Task<ArticleResponseDto> CreateArticle(ArticleDto articleDto, string authorId);
 
     Task<ArticleResponseDto> UpdateArticle(

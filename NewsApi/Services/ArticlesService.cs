@@ -7,29 +7,41 @@ using NewsApi.Services.Interfaces;
 
 namespace NewsApi.Services;
 
-public class ArticlesService(IArticleRepository productsRepository) : IArticlesService
+public class ArticlesService(IArticleRepository articleRepository) : IArticlesService
 {
-    private readonly IArticleRepository _articleRepository = productsRepository;
-
-    public async Task<List<ArticleResponseDto>> GetArticles()
+    public async Task<PagedResponse<ArticleResponseDto>> GetArticles(
+     int pageNumber,
+     int pageSize)
     {
-        var articles = await _articleRepository.GetAllAsync();
+        var articles = await articleRepository
+            .GetAllAsync(pageNumber, pageSize);
 
-        return articles.Select(a => new ArticleResponseDto
+        var totalCount = await articleRepository
+            .GetCountAsync();
+
+        return new PagedResponse<ArticleResponseDto>
         {
-            Id = a.Id,
-            Title = a.Title,
-            Content = a.Content!,
-            Status = a.Status,
-            CreatedAt = a.CreatedAt,
-            UpdatedAt = a.UpdatedAt,
-            Author = new UserResponseDto
+            Items = articles.Select(a => new ArticleResponseDto
             {
-                Id = a.Author!.Id!,
-                Name = a.Author.Name,
-                Email = a.Author.Email
-            }
-        }).ToList();
+                Id = a.Id,
+                Title = a.Title,
+                Content = a.Content!,
+                Status = a.Status,
+                CreatedAt = a.CreatedAt,
+                UpdatedAt = a.UpdatedAt,
+                Author = new UserResponseDto
+                {
+                    Id = a.Author!.Id!,
+                    Name = a.Author.Name,
+                    Email = a.Author.Email
+                }
+            }).ToList(),
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount,
+            TotalPages = (int)Math.Ceiling(
+                totalCount / (double)pageSize)
+        };
     }
 
     public async Task<ArticleResponseDto> CreateArticle(ArticleDto articleDto, string authorId)
@@ -43,7 +55,7 @@ public class ArticlesService(IArticleRepository productsRepository) : IArticlesS
             CreatedAt = DateTime.UtcNow
         };
 
-        var article = await _articleRepository.CreateAsync(newArticle);
+        var article = await articleRepository.CreateAsync(newArticle);
 
         return new ArticleResponseDto
         {
@@ -60,7 +72,7 @@ public class ArticlesService(IArticleRepository productsRepository) : IArticlesS
         UpdateArticleDto request,
         Guid currentUserId)
     {
-        var article = await _articleRepository.GetAsync(articleId);
+        var article = await articleRepository.GetAsync(articleId);
 
         if (article == null)
         {
@@ -75,7 +87,7 @@ public class ArticlesService(IArticleRepository productsRepository) : IArticlesS
         article.Title = request.Title;
         article.Content = request.Content;
 
-        await _articleRepository.UpdateAsync(article);
+        await articleRepository.UpdateAsync(article);
 
         return new ArticleResponseDto
         {
@@ -91,7 +103,7 @@ public class ArticlesService(IArticleRepository productsRepository) : IArticlesS
     Guid articleId,
     Guid currentUserId)
     {
-        var article = await _articleRepository.GetAsync(articleId);
+        var article = await articleRepository.GetAsync(articleId);
 
         if (article == null)
         {
@@ -103,6 +115,6 @@ public class ArticlesService(IArticleRepository productsRepository) : IArticlesS
             throw new ForbiddenException("You can only delete your own articles.");
         }
 
-        await _articleRepository.DeleteAsync(articleId);
+        await articleRepository.DeleteAsync(articleId);
     }
 }
