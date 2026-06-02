@@ -168,18 +168,19 @@ This approach avoids expensive database queries on every request.
 ### Authentication
 
 ```http
-POST /api/auth/register
-POST /api/auth/login
+POST /api/users/register
+POST /api/users/login
 ```
 
 ### Articles
 
 ```http
 GET    /api/articles
-GET    /api/articles/{id}
+GET    /api/articles/article/{articleId}
 POST   /api/articles
 PUT    /api/articles/{id}
-DELETE /api/articles/{id}
+DELETE /api/comments/{id}
+POST /api/articles/{id}/view
 ```
 
 ### Comments
@@ -187,16 +188,15 @@ DELETE /api/articles/{id}
 ```http
 GET    /api/articles/{id}/comments
 POST   /api/comments
-PUT    /api/comments/{id}
 DELETE /api/comments/{id}
 ```
 
 ### Favorites
 
 ```http
-POST   /api/favorite-articles/{articleId}
-DELETE /api/favorite-aritcles/{articleId}
 GET    /api/favorite-articles
+POST   /api/favorite-articles
+DELETE /api/favorite-aritcles/{articleId}
 ```
 
 ### Trending

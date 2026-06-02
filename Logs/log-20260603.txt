@@ -1,0 +1,73 @@
+2026-06-03 00:03:49.468 +05:30 [INF] Running Background cache service for trending articles at: "2026-06-03T00:03:49.4681420+05:30"
+2026-06-03 00:03:49.597 +05:30 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+
+             SELECT TOP 10
+                a.Id,
+                a.Title,
+                ISNULL(v.ViewCount, 0) AS ViewCount,
+                ISNULL(c.CommentCount, 0) AS CommentCount,
+                (
+                    ISNULL(v.ViewCount, 0) +
+                    ISNULL(c.CommentCount, 0) * 3
+                ) AS TrendingScore
+                FROM Articles a
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS ViewCount
+                    FROM ArticleViews
+                    WHERE ViewedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) v ON a.Id = v.ArticleId
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS CommentCount
+                    FROM Comments
+                    WHERE CreatedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) c ON a.Id = c.ArticleId
+             ORDER BY TrendingScore DESC
+2026-06-03 00:03:49.599 +05:30 [INF] Refreshing trending data
+2026-06-03 00:03:56.598 +05:30 [INF] Application is shutting down...
+2026-06-03 00:04:01.241 +05:30 [INF] User profile is available. Using '/Users/vinay.kumar/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-06-03 00:04:01.330 +05:30 [INF] Background cache service for trending articles initialized.
+2026-06-03 00:04:01.331 +05:30 [INF] Running Background cache service for trending articles at: "2026-06-03T00:04:01.3311900+05:30"
+2026-06-03 00:04:01.360 +05:30 [INF] Now listening on: http://localhost:5195
+2026-06-03 00:04:01.360 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-03 00:04:01.360 +05:30 [INF] Hosting environment: Development
+2026-06-03 00:04:01.360 +05:30 [INF] Content root path: /Users/vinay.kumar/Desktop/Learnings/News
+2026-06-03 00:04:02.110 +05:30 [INF] Executed DbCommand (40ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+
+             SELECT TOP 10
+                a.Id,
+                a.Title,
+                ISNULL(v.ViewCount, 0) AS ViewCount,
+                ISNULL(c.CommentCount, 0) AS CommentCount,
+                (
+                    ISNULL(v.ViewCount, 0) +
+                    ISNULL(c.CommentCount, 0) * 3
+                ) AS TrendingScore
+                FROM Articles a
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS ViewCount
+                    FROM ArticleViews
+                    WHERE ViewedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) v ON a.Id = v.ArticleId
+                LEFT JOIN
+                (
+                    SELECT
+                        ArticleId,
+                        COUNT(*) AS CommentCount
+                    FROM Comments
+                    WHERE CreatedAt >= DATEADD(DAY, -7, GETUTCDATE())
+                    GROUP BY ArticleId
+                ) c ON a.Id = c.ArticleId
+             ORDER BY TrendingScore DESC
+2026-06-03 00:04:02.128 +05:30 [INF] Refreshing trending data
