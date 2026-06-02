@@ -31,4 +31,32 @@ public class NewsController(IArticlesService articlesService) : ControllerBase
 
         return Ok(article);
     }
+
+    [Authorize]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(
+    Guid id,
+    UpdateArticleDto updateArticleDto)
+    {
+
+        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+        var article = await _articlesService.UpdateArticle(
+            id,
+            updateArticleDto,
+            userId);
+
+        return Ok(article);
+    }
+
+    [Authorize]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+        await _articlesService.DeleteArticle(id, userId);
+
+        return NoContent();
+    }
 }

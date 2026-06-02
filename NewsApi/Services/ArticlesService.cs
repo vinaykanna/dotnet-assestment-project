@@ -1,5 +1,6 @@
 
 using NewsApi.DTOs;
+using NewsApi.Exceptions;
 using NewsApi.Models;
 using NewsApi.Repositories;
 
@@ -9,6 +10,13 @@ public interface IArticlesService
 {
     Task<List<ArticleResponseDto>> GetArticles();
     Task<ArticleResponseDto> CreateArticle(ArticleDto articleDto, string authorId);
+
+    Task<ArticleResponseDto> UpdateArticle(
+        Guid articleId,
+        UpdateArticleDto request,
+        Guid currentUserId);
+
+    Task DeleteArticle(Guid articleId, Guid currentUserId);
 }
 
 public class ArticlesService(IArticleRepository productsRepository) : IArticlesService
@@ -57,5 +65,56 @@ public class ArticlesService(IArticleRepository productsRepository) : IArticlesS
             Status = article.Status,
             CreatedAt = article.CreatedAt
         };
+    }
+
+    public async Task<ArticleResponseDto> UpdateArticle(
+        Guid articleId,
+        UpdateArticleDto request,
+        Guid currentUserId)
+    {
+        var article = await _articleRepository.GetAsync(articleId);
+
+        if (article == null)
+        {
+            throw new NotFoundException("Article", articleId.ToString());
+        }
+
+        if (article.AuthorId != currentUserId)
+        {
+            throw new ForbiddenException("You can only update your own articles.");
+        }
+
+        article.Title = request.Title;
+        article.Content = request.Content;
+
+        await _articleRepository.UpdateAsync(article);
+
+        return new ArticleResponseDto
+        {
+            Id = article.Id,
+            Title = article.Title,
+            Content = article.Content!,
+            Status = article.Status,
+            CreatedAt = article.CreatedAt
+        };
+    }
+
+    public async Task DeleteArticle(
+    Guid articleId,
+    Guid currentUserId)
+    {
+        var article = await _articleRepository.GetAsync(articleId);
+
+        if (article == null)
+        {
+            throw new NotFoundException("Article", articleId.ToString());
+        }
+
+        if (article.AuthorId != currentUserId)
+        {
+            throw new ForbiddenException("You can only delete your own articles.");
+        }
+
+        await _articleRepository.DeleteAsync(articleId);
     }
 }

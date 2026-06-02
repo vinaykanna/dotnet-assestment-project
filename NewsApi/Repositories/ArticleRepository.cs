@@ -11,11 +11,11 @@ public interface IArticleRepository
 
     Task<Article?> CreateAsync(Article produdct);
 
-    Task<Article?> DeleteAsync(int id);
+    Task<Article?> DeleteAsync(Guid id);
 
     Task<Article?> UpdateAsync(Article product);
 
-    Task<Article?> GetAsync(int id);
+    Task<Article?> GetAsync(Guid id);
 }
 public class ArticlesRepository : IArticleRepository
 {
@@ -43,12 +43,12 @@ public class ArticlesRepository : IArticleRepository
                 .ToListAsync();
     }
 
-    public async Task<Article?> GetAsync(int id)
+    public async Task<Article?> GetAsync(Guid id)
     {
         return await _context.Articles.FindAsync(id);
     }
 
-    public async Task<Article?> DeleteAsync(int id)
+    public async Task<Article?> DeleteAsync(Guid id)
     {
         var Article = await _context.Articles.FindAsync(id);
 
