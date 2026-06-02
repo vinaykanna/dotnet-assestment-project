@@ -1,15 +1,10 @@
-
 using Microsoft.EntityFrameworkCore;
 using NewsApi.Data;
 using NewsApi.Models;
+using NewsApi.Repositories.Interfaces;
 
 namespace NewsApi.Repositories;
 
-public interface IUserRepository
-{
-    Task<User?> CreateAsync(User user);
-    Task<User?> GetByEmailAsync(string email);
-}
 public class UserRepository(AppDbContext context) : IUserRepository
 {
     private readonly AppDbContext _context = context;

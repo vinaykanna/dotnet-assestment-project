@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using NewsApi.Authentication;
 using NewsApi.Data;
+using NewsApi.Repositories.Interfaces;
+using NewsApi.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

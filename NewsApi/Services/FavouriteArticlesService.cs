@@ -1,16 +1,9 @@
 using NewsApi.DTOs;
 using NewsApi.Exceptions;
 using NewsApi.Models;
-using NewsApi.Repositories;
-
+using NewsApi.Repositories.Interfaces;
+using NewsApi.Services.Interfaces;
 namespace NewsApi.Services;
-
-public interface IFavouriteArticlesService
-{
-    Task<List<FavouriteArticleResponseDto>> GetFavourites();
-    Task<FavouriteArticle?> CreateFavourite(FavouriteArticleDto favouriteArticle, Guid currentUserId);
-    Task<FavouriteArticle?> DeleteFavourite(Guid id, Guid currentUserId);
-}
 
 public class FavouriteArticlesService(IFavouriteArticleRepository favouriteArticleRepository) : IFavouriteArticlesService
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NewsApi.DTOs;
-using NewsApi.Services;
+using NewsApi.Services.Interfaces;
 
 namespace NewsApi.Controllers;
 

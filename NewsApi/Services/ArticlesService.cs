@@ -2,22 +2,10 @@
 using NewsApi.DTOs;
 using NewsApi.Exceptions;
 using NewsApi.Models;
-using NewsApi.Repositories;
+using NewsApi.Repositories.Interfaces;
+using NewsApi.Services.Interfaces;
 
 namespace NewsApi.Services;
-
-public interface IArticlesService
-{
-    Task<List<ArticleResponseDto>> GetArticles();
-    Task<ArticleResponseDto> CreateArticle(ArticleDto articleDto, string authorId);
-
-    Task<ArticleResponseDto> UpdateArticle(
-        Guid articleId,
-        UpdateArticleDto request,
-        Guid currentUserId);
-
-    Task DeleteArticle(Guid articleId, Guid currentUserId);
-}
 
 public class ArticlesService(IArticleRepository productsRepository) : IArticlesService
 {

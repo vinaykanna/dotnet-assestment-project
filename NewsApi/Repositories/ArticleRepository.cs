@@ -2,17 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using NewsApi.Data;
 using NewsApi.Models;
+using NewsApi.Repositories.Interfaces;
 
 namespace NewsApi.Repositories;
 
-public interface IArticleRepository
-{
-    Task<List<Article>> GetAllAsync();
-    Task<Article?> CreateAsync(Article produdct);
-    Task<Article?> DeleteAsync(Guid id);
-    Task<Article?> UpdateAsync(Article product);
-    Task<Article?> GetAsync(Guid id);
-}
 public class ArticlesRepository(AppDbContext context) : IArticleRepository
 {
     private readonly AppDbContext _context = context;

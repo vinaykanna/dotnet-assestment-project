@@ -2,17 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using NewsApi.Data;
 using NewsApi.Models;
+using NewsApi.Repositories.Interfaces;
 
 namespace NewsApi.Repositories;
 
-public interface IFavouriteArticleRepository
-{
-    Task<List<FavouriteArticle>> GetAllAsync();
-
-    Task<FavouriteArticle?> CreateAsync(FavouriteArticle produdct);
-
-    Task<FavouriteArticle?> DeleteAsync(Guid id);
-}
 public class FavouriteArticleRepository(AppDbContext context) : IFavouriteArticleRepository
 {
     private readonly AppDbContext _context = context;

@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using NewsApi.DTOs;
 using NewsApi.Enums;
 using NewsApi.Models;
-using NewsApi.Services;
+using NewsApi.Services.Interfaces;
+
 namespace NewsApi.Controllers;
 
 [ApiController]

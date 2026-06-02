@@ -1,20 +1,14 @@
 
 using NewsApi.Models;
-using NewsApi.Repositories;
 using NewsApi.DTOs;
 using Microsoft.AspNetCore.Identity;
 using NewsApi.Enums;
 using NewsApi.Authentication;
 using NewsApi.Exceptions;
+using NewsApi.Repositories.Interfaces;
+using NewsApi.Services.Interfaces;
 
 namespace NewsApi.Services;
-
-public interface IUsersService
-{
-    Task<UserResponseDto?> CreateUser(UserDto userDto);
-
-    Task<string?> LoginUser(LoginDto loginDto);
-}
 
 public class UsersService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IJwtTokenGenerator jwtTokenGenerator) : IUsersService
 {
