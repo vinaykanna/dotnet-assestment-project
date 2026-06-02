@@ -12,6 +12,7 @@ public class UserDto
     public string Email { get; set; }
 
     [Required]
+    [PasswordValidation]
     public string Password { get; set; }
 
     [Required]
