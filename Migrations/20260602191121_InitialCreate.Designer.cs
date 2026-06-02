@@ -12,8 +12,8 @@ using NewsApi.Data;
 namespace NewsApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260602113825_AddCommentsTable")]
-    partial class AddCommentsTable
+    [Migration("20260602191121_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,29 @@ namespace NewsApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("NewsApi.DTOs.TrendingArticleDto", b =>
+                {
+                    b.Property<int>("CommentCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TrendingScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.ToTable((string)null);
+
+                    b.ToView(null, (string)null);
+                });
 
             modelBuilder.Entity("NewsApi.Models.Article", b =>
                 {
@@ -55,6 +78,30 @@ namespace NewsApi.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("NewsApi.Models.ArticleView", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ViewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ArticleViews");
                 });
 
             modelBuilder.Entity("NewsApi.Models.Comment", b =>
@@ -149,6 +196,25 @@ namespace NewsApi.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("NewsApi.Models.ArticleView", b =>
+                {
+                    b.HasOne("NewsApi.Models.Article", "Article")
+                        .WithMany("ArticleViews")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NewsApi.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("NewsApi.Models.Comment", b =>
                 {
                     b.HasOne("NewsApi.Models.Article", "Article")
@@ -189,6 +255,8 @@ namespace NewsApi.Migrations
 
             modelBuilder.Entity("NewsApi.Models.Article", b =>
                 {
+                    b.Navigation("ArticleViews");
+
                     b.Navigation("Comments");
                 });
 

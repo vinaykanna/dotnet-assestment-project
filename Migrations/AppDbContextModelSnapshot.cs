@@ -22,6 +22,29 @@ namespace NewsApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("NewsApi.DTOs.TrendingArticleDto", b =>
+                {
+                    b.Property<int>("CommentCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TrendingScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.ToTable((string)null);
+
+                    b.ToView(null, (string)null);
+                });
+
             modelBuilder.Entity("NewsApi.Models.Article", b =>
                 {
                     b.Property<Guid>("Id")
@@ -173,7 +196,7 @@ namespace NewsApi.Migrations
             modelBuilder.Entity("NewsApi.Models.ArticleView", b =>
                 {
                     b.HasOne("NewsApi.Models.Article", "Article")
-                        .WithMany()
+                        .WithMany("ArticleViews")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -229,6 +252,8 @@ namespace NewsApi.Migrations
 
             modelBuilder.Entity("NewsApi.Models.Article", b =>
                 {
+                    b.Navigation("ArticleViews");
+
                     b.Navigation("Comments");
                 });
 

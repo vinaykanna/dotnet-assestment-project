@@ -10,7 +10,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<User> Users { get; set; }
     public DbSet<FavouriteArticle> FavouriteArticles { get; set; }
     public DbSet<Comment> Comments { get; set; }
-
     public DbSet<ArticleView> ArticleViews { get; set; }
 
 
@@ -20,7 +19,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<TrendingArticleDto>()
-            .HasNoKey();
+            .HasNoKey()
+            .ToView(null);
 
         modelBuilder.Entity<Article>()
                .HasOne(a => a.Author)
