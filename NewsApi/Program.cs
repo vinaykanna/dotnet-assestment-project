@@ -50,6 +50,27 @@ builder.Services.AddAuthentication(
                         Encoding.UTF8.GetBytes(
                             builder.Configuration["Jwt:Key"]!))
             };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"AUTH FAILED: {context.Exception}");
+                return Task.CompletedTask;
+            },
+
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine("TOKEN VALIDATED");
+                return Task.CompletedTask;
+            },
+
+            OnChallenge = context =>
+            {
+                Console.WriteLine("AUTH CHALLENGE");
+                return Task.CompletedTask;
+            }
+        };
     });
 
 

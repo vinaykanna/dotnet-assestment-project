@@ -35,7 +35,11 @@ public class ArticlesRepository : IArticleRepository
 
     public async Task<List<Article>> GetAllAsync()
     {
-        return await _context.Articles.ToListAsync();
+        return await _context.Articles
+                .AsNoTracking()
+                .OrderByDescending(x => x.CreatedAt)
+                .Include(x => x.Author)
+                .ToListAsync();
     }
 
     public async Task<Article?> GetAsync(int id)

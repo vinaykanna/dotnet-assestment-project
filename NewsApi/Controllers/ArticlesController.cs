@@ -1,23 +1,35 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using NewsApi.DTOs;
+using NewsApi.Enums;
 using NewsApi.Models;
-
+using NewsApi.Services;
 namespace NewsApi.Controllers;
 
 [ApiController]
-[Route("api/news")]
-public class NewsController(AppDbContext context) : ControllerBase
+[Route("api/articles")]
+public class NewsController(IArticlesService articlesService) : ControllerBase
 {
-    private readonly AppDbContext _context = context;
 
+    private readonly IArticlesService _articlesService = articlesService;
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Article>>> GetArticles()
+    [Authorize]
+    public async Task<ActionResult<List<Article>>> GetArticles()
     {
-        var articles = await _context.Articles
-            .AsNoTracking()
-            .OrderByDescending(x => x.CreatedAt)
-            .ToListAsync();
+        var articles = await _articlesService.GetArticles();
 
         return Ok(articles);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = nameof(Role.Author))]
+    public async Task<ActionResult<ArticleResponseDto>> CreateArticle(ArticleDto articleDto)
+    {
+        var authorId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var article = await _articlesService.CreateArticle(articleDto, authorId!);
+
+        return Ok(article);
     }
 }
