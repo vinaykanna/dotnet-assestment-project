@@ -12,4 +12,5 @@ public class User
     public Role Role { get; set; }
     public IList<Article>? AuthoredArticles { get; set; }
     public IList<FavouriteArticle>? FavouritedArticles { get; set; }
+    public IList<Comment>? Comments { get; set; }
 }

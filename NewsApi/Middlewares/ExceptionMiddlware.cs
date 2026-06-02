@@ -69,6 +69,11 @@ public class ExceptionMiddleware
 
         catch (ForbiddenException ex)
         {
+            _logger.LogError(
+                ex,
+                "Forbidden"
+            );
+
             httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
 
             await httpContext.Response.WriteAsJsonAsync(new
@@ -82,7 +87,10 @@ public class ExceptionMiddleware
             httpContext.Response.StatusCode = 500;
             httpContext.Response.ContentType = "application/json";
 
-            Console.WriteLine(ex);
+            _logger.LogError(
+                ex,
+                "Error occured"
+            );
 
             var response = new
             {

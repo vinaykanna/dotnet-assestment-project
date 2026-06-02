@@ -3,6 +3,7 @@ using NewsApi.Exceptions;
 using NewsApi.Models;
 using NewsApi.Repositories.Interfaces;
 using NewsApi.Services.Interfaces;
+
 namespace NewsApi.Services;
 
 public class FavouriteArticlesService(IFavouriteArticleRepository favouriteArticleRepository) : IFavouriteArticlesService
@@ -35,7 +36,7 @@ public class FavouriteArticlesService(IFavouriteArticleRepository favouriteArtic
 
     public async Task<FavouriteArticle?> DeleteFavourite(Guid id, Guid currentUserId)
     {
-        var favouriteArticle = await favouriteArticleRepository.DeleteAsync(id);
+        var favouriteArticle = await favouriteArticleRepository.GetAsync(id);
 
         if (favouriteArticle == null)
         {
@@ -46,6 +47,8 @@ public class FavouriteArticlesService(IFavouriteArticleRepository favouriteArtic
         {
             throw new ForbiddenException("You can only delete your own favourite articles.");
         }
+
+        await favouriteArticleRepository.DeleteAsync(favouriteArticle);
 
         return favouriteArticle;
     }

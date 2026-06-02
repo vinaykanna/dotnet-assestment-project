@@ -6,10 +6,9 @@ namespace NewsApi.Data;
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<Article> Articles { get; set; }
-
     public DbSet<User> Users { get; set; }
-
     public DbSet<FavouriteArticle> FavouriteArticles { get; set; }
+    public DbSet<Comment> Comments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -26,15 +26,18 @@ public class FavouriteArticleRepository(AppDbContext context) : IFavouriteArticl
                 .ToListAsync();
     }
 
-    public async Task<FavouriteArticle?> DeleteAsync(Guid id)
+    public async Task<FavouriteArticle?> GetAsync(Guid id)
     {
-        var favouriteArticle = await _context.FavouriteArticles.FindAsync(id);
+        var favouriteArticle = await _context.FavouriteArticles
+                .AsNoTracking()
+                .Include(x => x.Article)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-        if (favouriteArticle == null)
-        {
-            return null;
-        }
+        return favouriteArticle;
+    }
 
+    public async Task<FavouriteArticle?> DeleteAsync(FavouriteArticle favouriteArticle)
+    {
         _context.FavouriteArticles.Remove(favouriteArticle);
         await _context.SaveChangesAsync();
         return favouriteArticle;
