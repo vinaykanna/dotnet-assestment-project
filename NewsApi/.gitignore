@@ -1,0 +1,25 @@
+# Build output
+bin/
+obj/
+
+# User-specific files
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# EF Core local database files
+*.mdf
+*.ldf
+
+# Secrets
+appsettings.Development.json
+secrets.json
