@@ -22,13 +22,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // builder.Host.UseSerilog();
 
+
+// Services
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-
 builder.Services.AddAuthentication(
     JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -69,26 +69,22 @@ builder.Services.AddAuthentication(
             }
         };
     });
-
 builder.Services.AddAuthorization();
-
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUsersService, UsersService>();
-
 builder.Services.AddScoped<IArticleRepository, ArticlesRepository>();
 builder.Services.AddScoped<IArticlesService, ArticlesService>();
-
-
+builder.Services.AddScoped<IFavouriteArticleRepository, FavouriteArticleRepository>();
+builder.Services.AddScoped<IFavouriteArticlesService, FavouriteArticlesService>();
 builder.Services.AddControllers();
-
 builder.Services.AddMemoryCache();
-
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+
+// Request pipleline
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

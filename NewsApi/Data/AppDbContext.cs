@@ -9,21 +9,26 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     public DbSet<User> Users { get; set; }
 
-    public DbSet<User> Favourites { get; set; }
+    public DbSet<FavouriteArticle> FavouriteArticles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Article>()
+               .HasOne(a => a.Author)
+               .WithMany(u => u.AuthoredArticles)
+               .HasForeignKey(a => a.AuthorId)
+               .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<FavoriteArticle>()
-            .HasOne(fa => fa.User)
-            .WithMany(u => u.FavoritedArticles)
-            .HasForeignKey(fa => fa.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<FavouriteArticle>()
+            .HasOne(f => f.User)
+            .WithMany(u => u.FavouritedArticles)
+            .HasForeignKey(f => f.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<FavoriteArticle>()
-            .HasOne(fa => fa.Article)
-            .WithMany(a => a.FavoritedBy)
-            .HasForeignKey(fa => fa.ArticleId)
-            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<FavouriteArticle>()
+            .HasOne(f => f.Article)
+            .WithMany()
+            .HasForeignKey(f => f.ArticleId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

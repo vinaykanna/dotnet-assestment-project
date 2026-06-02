@@ -8,29 +8,19 @@ namespace NewsApi.Repositories;
 public interface IArticleRepository
 {
     Task<List<Article>> GetAllAsync();
-
     Task<Article?> CreateAsync(Article produdct);
-
     Task<Article?> DeleteAsync(Guid id);
-
     Task<Article?> UpdateAsync(Article product);
-
     Task<Article?> GetAsync(Guid id);
 }
-public class ArticlesRepository : IArticleRepository
+public class ArticlesRepository(AppDbContext context) : IArticleRepository
 {
-    private readonly AppDbContext _context;
-    public ArticlesRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     public async Task<Article?> CreateAsync(Article product)
     {
         await _context.Articles.AddAsync(product);
-
         await _context.SaveChangesAsync();
-
         return product;
     }
 
@@ -58,7 +48,6 @@ public class ArticlesRepository : IArticleRepository
         }
 
         _context.Articles.Remove(Article);
-
         await _context.SaveChangesAsync();
 
         return Article;
@@ -67,9 +56,7 @@ public class ArticlesRepository : IArticleRepository
     public async Task<Article?> UpdateAsync(Article product)
     {
         _context.Articles.Update(product);
-
         await _context.SaveChangesAsync();
-
         return product;
     }
 }
