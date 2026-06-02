@@ -1,4 +1,3 @@
-
 using NewsApi.Enums;
 
 namespace NewsApi.Models;

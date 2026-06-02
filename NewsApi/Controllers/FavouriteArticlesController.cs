@@ -13,7 +13,8 @@ public class FavouriteArticlesController(IFavouriteArticlesService favouriteArti
     [Authorize]
     public async Task<IActionResult> GetFavourites()
     {
-        var favourites = await favouriteArticlesService.GetFavourites();
+        var userId = User.GetUserId();
+        var favourites = await favouriteArticlesService.GetFavourites(userId);
         return Ok(favourites);
     }
 

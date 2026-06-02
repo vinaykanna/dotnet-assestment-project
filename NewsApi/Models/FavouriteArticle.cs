@@ -1,4 +1,3 @@
-
 namespace NewsApi.Models;
 
 public class FavouriteArticle

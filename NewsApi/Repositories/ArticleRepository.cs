@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using NewsApi.Data;
 using NewsApi.Models;
@@ -46,10 +45,10 @@ public class ArticlesRepository(AppDbContext context) : IArticleRepository
         return Article;
     }
 
-    public async Task<Article?> UpdateAsync(Article product)
+    public async Task<Article?> UpdateAsync(Article article)
     {
-        _context.Articles.Update(product);
+        _context.Articles.Update(article);
         await _context.SaveChangesAsync();
-        return product;
+        return article;
     }
 }

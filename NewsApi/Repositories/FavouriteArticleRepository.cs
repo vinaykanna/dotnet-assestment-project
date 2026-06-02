@@ -17,10 +17,11 @@ public class FavouriteArticleRepository(AppDbContext context) : IFavouriteArticl
         return favouriteArticle;
     }
 
-    public async Task<List<FavouriteArticle>> GetAllAsync()
+    public async Task<List<FavouriteArticle>> GetByUserIdAsync(Guid userId)
     {
         return await _context.FavouriteArticles
                 .AsNoTracking()
+                .Where(x => x.UserId == userId)
                 .Include(x => x.Article)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();

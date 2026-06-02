@@ -8,9 +8,9 @@ namespace NewsApi.Services;
 
 public class FavouriteArticlesService(IFavouriteArticleRepository favouriteArticleRepository) : IFavouriteArticlesService
 {
-    public async Task<List<FavouriteArticleResponseDto>> GetFavourites()
+    public async Task<List<FavouriteArticleResponseDto>> GetFavourites(Guid userID)
     {
-        var articles = await favouriteArticleRepository.GetAllAsync();
+        var articles = await favouriteArticleRepository.GetByUserIdAsync(userID);
 
         return articles.Select(a => new FavouriteArticleResponseDto
         {
