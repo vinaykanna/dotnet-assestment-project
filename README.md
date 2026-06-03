@@ -181,6 +181,7 @@ POST   /api/articles
 PUT    /api/articles/{id}
 DELETE /api/comments/{id}
 POST /api/articles/{id}/view
+GET /api/articles/trending
 ```
 
 ### Comments
@@ -199,24 +200,18 @@ POST   /api/favorite-articles
 DELETE /api/favorite-aritcles/{articleId}
 ```
 
-### Trending
-
-```http
-GET /api/articles/trending
-```
-
 ## Running Locally
 
 ### Prerequisites
 
-* .NET 9 SDK
+* .NET 10 SDK
 * SQL Server
 * Redis
 
 ### Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/vinaykanna/News-DotNet-API.git
 ```
 
 ### Update Connection Strings in appsettings.Development.json or in Environment Variables
