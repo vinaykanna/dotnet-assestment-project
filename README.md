@@ -252,5 +252,5 @@ dotnet run
 ### Open API Docs
 
 ```text
-https://localhost:5195/scalar
+http://localhost:5195/scalar
 ```
